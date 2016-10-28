@@ -5,6 +5,7 @@
 \usepackage{underscore}
 \usepackage[bookmarks=true]{hyperref}
 \usepackage[utf8]{inputenc}
+\usepackage{float}
 \usepackage[french]{babel}
 \hypersetup{
     bookmarks=false,    % show bookmarks bar
@@ -57,7 +58,7 @@
         \vspace{5cm}
 	\huge{
         \textbf{
-	Written by \\
+	Ecrit par \\
 	\vspace{0,875cm}
 	\href{mailto:theodore.lambolez@telecomnancy.eu}{Théodore Lambolez} \\
 	\href{mailto:maximilien.petit@telecomnancy.eu}{Maximilien Petit}\\
@@ -73,7 +74,8 @@
 
 \tableofcontents
 
-\chapter{Première Partie}
+\chapter{Première partie}
+\addcontentsline{toc}{chapter}{Première partie}
 
 \begin{center}
 \large{
@@ -81,6 +83,7 @@
 \end{center}
 
 \section{Caractérisation d'une image}
+\addcontentsline{toc}{section}{Caractérisation d'une image}
 
 Dans cette première section, nous aborderons la caractérisations de quatres images : Connect_OK, Connect_L,
 Connect_D et PNCN 256. 	
@@ -145,8 +148,7 @@ du capteur qui a pris cette image n'est pas assez élevée.
 \newpage
 Maintenant, concentrons nous sur l'image PNCN256. Nous avons dans un premier temps réalisé l'histogramme de celle-ci. Nous observons que 
 la dynamique de cette image s'étant du niveau de gris 0 au niveau de gris 200 environ. Il est difficile avec cet histogramme de séparer
-les différents objets du fond. En effet, cet histogramme est plutôt condensé comparé à ceux des trois autres images déjà analysées. 
-On peut remarquer maintenant après réalisation du profil de ligne du allant du coin haut gauche au coin bas droite de l'image, un problème 
+les différents objets du fond. D'autant plus que, après réalisation du profil de ligne du allant du coin haut gauche au coin bas droite de l'image, on peut remarquer un problème 
 d'éclairage de la scène. En effet, on a des niveaux de gris élevé du côté du coin haut gauche et des niveaux de gris plus faibles du côté 
 du coin bas droite. Cela met en évidence un éclaire non homogène venant du coin haut gauche de l'image de la scène. 
   
@@ -163,9 +165,97 @@ du coin bas droite. Cela met en évidence un éclaire non homogène venant du co
 \caption{Profil de ligne de PNCN 256}
 \end{figure}
 
-\chapter{Deuxième Partie : Traitements aux environs du pixel}
+\newpage
+\section{Traitements d'amélioration par LUT}
+\addcontentsline{toc}{section}{Traitements d'amélioration par LUT}
 
-\chapter{Troisième Partie : Filtrage Morphologique}
+Le premier objectif qui nous a été posé dans cette section, est de réaliser deux LUT. 
+En effet, on désire réajuster numériquement les problèmes d'éclairage des images 
+Connect_L et Connect_D dont nous nous sommes rendu-compte précédemment. 
+Pour ce faire, on a dû réajuster les encadrements de niveaux de gris observés dans la
+première section. La figure suivante nous montre les LUTs appliquées respectivement à 
+l'image Connect_L et Connect_D. Celles-ci ne sont pas très précises, compte-tenu du 
+fait qu'elles ont été faites à main levée.  
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=5cm,width=5cm]{images/lut1.png} \hfill
+\includegraphics[height=5cm,width=5cm]{images/lut2.png}
+\caption{LUTs appliquées respectivement à Connect_L et Connect_D}
+\end{figure}
+
+Le deuxième objectif a été de réutiliser l'outil Threshold afin d'effectuer un seuillage
+qui nous permettrait de ne faire apparaitre que les broches. Nous pouvons constater d'après la figure
+suivante que placer le seuil au niveau de gris 131 est suffisant. Ainsi si nous réalisions une LUT
+où on aurait 0 en ordonnée du niveau de gris 0 au niveau de gris 131, et, où on aurait 255 en 
+ordonnée du niveau de gris 131 au niveau de gris 255, on ne verrait que les broches en blanc sur
+un fond noir.  
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=5cm,width=7.5cm]{images/threshold1.png}
+\caption{Seuillage grâce à l'outil Threshold}
+\end{figure}
+
+\newpage
+Il est difficile manuellement de définir un seuil exacte pour ne récupérer que les broches.
+En effet, l'histogrammes ne présente pas un pic bien définit représentant le niveau de gris 
+des broches. Un trop grand nombre de niveaux de gris représente en fait la transition entre
+les broches et le reste de l'image. Le seuillage automatique proposé par l'outil nous donne 
+les valeurs suivante : 
+
+\begin{table}[H]
+        \begin{center}
+                \begin{tabular}{|c|c|c|}
+                   \hline
+                   & Seuil bas & Seuil haut \\
+                   \hline
+                   Manuel & 125 & 255\\
+                   \hline
+                   Automatique & 131 & 255\\
+                   \hline
+                \end{tabular}
+        \end{center}
+        \caption{Comparaisons : seuils de niveaux de gris}
+\end{table} 
+
+On constate néanmoins pour cet échantillon de données un faible écart du seuil bas.
+
+\chapter{Deuxième partie}
+\addcontentsline{toc}{chapter}{Deuxième partie}
+
+\begin{center}
+\large{
+\textbf{Traitements aux environs du pixel.}}
+\end{center}
+
+\section{Passe bas}
+\addcontentsline{toc}{section}{Passe bas}
+
+\section{Réhaussement de contours}
+\addcontentsline{toc}{section}{Réhaussement de contours}
+
+
+
+\newpage
+\section{Détection de contours}
+\addcontentsline{toc}{section}{Détection de contours}
+
+\newpage
+\chapter{Troisième partie}
+\addcontentsline{toc}{chapter}{Troisième partie}
+
+\begin{center}
+\large{
+\textbf{Filtrage Morphologique}}
+\end{center}
+
+\section{Morphologie mathématique binaire}
+\addcontentsline{toc}{section}{Morphologie mathématique binaire}
+
+\newpage
+\section{Morphologie mathématique en niveau de gris}
+\addcontentsline{toc}{section}{Morphologie mathématique en niveau de gris}
 
 \end{document}
 
