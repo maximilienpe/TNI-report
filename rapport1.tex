@@ -232,14 +232,193 @@ On constate néanmoins pour cet échantillon de données un faible écart du seu
 \section{Passe bas}
 \addcontentsline{toc}{section}{Passe bas}
 
+Pour ce début de deuxième partie, nous devons mettre en évidence les différences entre divers applications de filtres passe-bas.
+On voit tout d'abord qu'un filtre gaussien avec un masque 3x3 garde l'image plus nette que le filtre gaussian 5x5. Ce résultat semble logique
+puisqu'en effet, un masque 5x5 prend en compte beaucoup plus de pixel qu'un masque 3x3.
+
+De plus, nous remarquons qu'un filtre médian qui est en fait une opération non linéaire contrairement au filtre gaussien, réduit beaucoup plus le bruit
+dans le cas de l'image MEDIAN.tif
+
+Voici les résultats obtenus. 
+
+\begin{figure}[!h]
+\centering
+\includegraphics[height=5cm,width=15cm]{images/gaussian.png}
+\caption{Comparaison image Median.tif non filtrée, filtrée Gaussian 3x3, filtrée Gaussian 5x5}
+\end{figure}
+
+\newpage
+\begin{figure}[!h]
+\centering
+\includegraphics[height=5cm,width=15cm]{images/median.png}
+\caption{Comparaison image Median.tif non filtrée, filtrée Median 3x3, filtrée Median 5x5}
+\end{figure}
+
+Dans une deuxième partie, on se propose, toujours pour la même image de réaliser d'appliquer un filtre passe-bas
+grâce à la Transformée de Fourier, notion de traitement du signal adaptée ici au traitement d'une image. 
+On voit donc sur la figure suivante la représentation graphique des fréquences de l'image Median.tif 
+
+\begin{figure}[!h]
+\centering
+\includegraphics[height=5cm,width=5cm]{images/tfmedian.png}
+\caption{Représentation de la transformée de Fourier appliquée à l'image Median.tif}
+\end{figure}
+
+Ensuite, pour réaliser le filtre, il faut réaliser avec le logiciel une zone d'application que l'on concervera. 
+On doit en effet, laisser les basses fréquences et supprimer les hautes fréquence à l'aide de la commande "zeros outside" d'Optimas.
+De cette manière, le bruit impulsionnelle (représenté en transformée de Fourier par les hautes fréquences) sera supprimé.
+
+\newpage
+Voici un apperçu des fréquences gardées. 
+
+\begin{figure}[!h]
+\centering
+\includegraphics[height=5cm,width=5cm]{images/tfmediancut.png}
+\caption{Représentation de la transformée de Fourier appliquée à l'image Median.tif découpée}
+\end{figure}
+
+Néanmoins, lorsque nous avons réalisé le transformée inverse, nous avons constaté que le bruit n'avait pas été supprimé correctement. 
+
+\begin{figure}[!h]
+\centering
+\includegraphics[height=5cm,width=5cm]{images/mediancut.png}
+\caption{Filtrage avec la méthode décrite}
+\end{figure}
+
+\newpage
+
+
 \section{Réhaussement de contours}
 \addcontentsline{toc}{section}{Réhaussement de contours}
 
+Nous voulons maintenant utiliser des filtres de réhaussement de contours pour mettre en évidence l'un phénomènes liés au système optique humain, 
+le phénomène de Mach. On dit que le système optique humain a un comportement intégrateur.
+Nous pouvons remarquer que les différents filtres amplifient les lignes intermédiaires entre les différentes colonnes de niveau de gris.
+Le sharpenlow et le sharpenmid n'amplifient pas beaucoup ce phénomène contrairement au sharpenhigh. 
+Voici un apperçu. 
 
+\begin{figure}[!h]
+\centering
+\includegraphics[height=5cm,width=15cm]{images/sharpenlow.png}
+\caption{Utilisation de Sharpen Low mire_gris.tif}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[height=5cm,width=15cm]{images/sharpenmid.png}     
+\caption{Utilisation de Sharpen mid mire_gris.tif}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[height=5cm,width=15cm]{images/sharpenlow.png}     
+\caption{Utilisation de Sharpen Low mire_gris.tif}
+\end{figure}
+  
+\newpage
+Pour mieux constater l'influence de ces différents filtres, nous avons choisi de tracer les profils de lignes suivant.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[height=7.5cm,width=15cm]{images/profillignemiregris.png}
+\caption{Profil de ligne de l'image mire_gris.tif}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[height=7.5cm,width=15cm]{images/profillignesharpenlow.png}
+\caption{Profil de ligne de l'image mire_gris.tif auquel on a appliqué un filtre sharpen low}
+\end{figure}
+
+\newpage
+\begin{figure}[!h]
+\centering
+\includegraphics[height=7.5cm,width=15cm]{images/profillignesharpenmid.png}
+\caption{Profil de ligne de l'image mire_gris.tif auquel on a appliqué un filtre sharpen mid}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[height=7.5cm,width=15cm]{images/profillignesharpenhigh.png}
+\caption{Profil de ligne de l'image mire_gris.tif auquel on a appliqué un filtre sharpen high}
+\end{figure}
 
 \newpage
 \section{Détection de contours}
 \addcontentsline{toc}{section}{Détection de contours}
+
+Dans cette dernière partie, on veut mettre en évidence l'effet du filtre de Sobel. On réalisera 
+à nouveau des profils de lignes sur les images bien connues, Connect_ok, Connect_L, Connect_D, Connect_B1
+et enfin Connect_B2. Ensuite, on réalisera un filtrage de sobel en reprennant les profils de lignes. 
+
+
+\begin{figure}[!h]
+\centering
+\includegraphics[height=7.5cm,width=15cm]{images/connectokline.png}
+\caption{Profil de ligne de l'image Connect_ok.tif original}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[height=7.5cm,width=15cm]{images/connectLline.png}
+\caption{Profil de ligne de l'image Connect_L.tif original}
+\end{figure}
+
+\newpage
+\begin{figure}[!h]
+\centering
+\includegraphics[height=7.5cm,width=15cm]{images/connectDline.png}
+\caption{Profil de ligne de l'image Connect_D.tif original}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[height=7.5cm,width=15cm]{images/connectB1line.png}
+\caption{Profil de ligne de l'image Connect_B1.tif original}
+\end{figure}
+
+\newpage
+\begin{figure}[!h]
+\centering
+\includegraphics[height=7.5cm,width=15cm]{images/connectB2line.png}
+\caption{Profil de ligne de l'image Connect_B2.tif original}
+\end{figure}
+
+On peut aisément observer les broches de ces connecteurs dans ces profils de colonnes qui correspondent aux pixels dont le niveau de gris est élevé. 
+
+\begin{figure}[!h]
+\centering
+\includegraphics[height=7.5cm,width=15cm]{images/connectoklineSobel.png}
+\caption{Profil de ligne de l'image Connect_ok.tif après filtrage avec Sobel}
+\end{figure}
+
+\newpage
+\begin{figure}[!h]
+\centering
+\includegraphics[height=7.5cm,width=15cm]{images/connectLlineSobel.png}
+\caption{Profil de ligne de l'image Connect_L.tif après filtrage avec Sobel}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[height=7.5cm,width=15cm]{images/connectDlineSobel.png}
+\caption{Profil de ligne de l'image Connect_D.tif après filtrage avec Sobel}
+\end{figure}
+
+\newpage
+\begin{figure}[!h]
+\centering
+\includegraphics[height=7.5cm,width=15cm]{images/connectB1lineSobel.png}
+\caption{Profil de ligne de l'image Connect_B1.tif après filtrage avec Sobel}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[height=7.5cm,width=15cm]{images/connectB2lineSobel.png}
+\caption{Profil de ligne de l'image Connect_B2.tif après filtrage avec Sobel}
+\end{figure}
+
+Grâce à ces profils de ligne après filtrage avec Sobel, on remarque qu'il y a en fait deux pics par broches.
 
 \newpage
 \chapter{Troisième partie}
@@ -253,9 +432,84 @@ On constate néanmoins pour cet échantillon de données un faible écart du seu
 \section{Morphologie mathématique binaire}
 \addcontentsline{toc}{section}{Morphologie mathématique binaire}
 
+
+Pour cette dernière grande partie, on va travailler essentiellement sur l'image divers.tif.
+Nous commençons par binariser cette image avant de pouvoir effectuer divers opérations morphologiques. 
+
+Voici l'image binarisée. 
+
+\begin{figure}[!h]
+\centering
+\includegraphics[height=7.5cm,width=15cm]{images/diversbinpes.png}
+\caption{Image divers.tif binarisée}
+\end{figure}
+
+\newpage
+Sur cette image on se propose maintenant de réaliser des dilatations et des erosions morphologiques. 
+On obtient ce résultat. 
+
+\begin{figure}[!h]
+\centering
+\includegraphics[height=5cm,width=5cm]{images/4dilates.png} \hfill
+\includegraphics[height=5cm,width=5cm]{images/4erodes.png}
+\caption{Image binarisée, quatre fois dilatée, quatres fois érodée}
+\end{figure}
+
+On remarque que les opérations de dilation et d'érosions morphologiques ne sont pas idempotentes.
+De plus, on peut observer qu'on obtient le même résultat qu'en réalisant quatre dilatations ou quatre érosions, 
+en appliquant une dilatations avec un élément structurant d'une taille quatre fois supérieure, ou une érosion avec
+un élément struturant d'une taille quatre fois supérieure.
+
+Voici le résultat après une dilatation en prenant un élément struturant de taille 4. 
+
+\begin{figure}[!h]
+\centering
+\includegraphics[height=7.5cm,width=15cm]{images/graydilatation.png}
+\caption{Image divers binarisée dilaté avec un élément structurant de taille 4}
+\end{figure}  
+
+\newpage
+On peut se séparer des pixels parasites avec les opérations open et close. 
+En effet, on peut constater sur la figure suivante que nous n'avons plus de pixels parasites sur
+l'image. 
+
+\begin{figure}[!h]
+\centering
+\includegraphics[height=5cm,width=5cm]{images/open.png} \hfill
+\includegraphics[height=5cm,width=5cm]{images/close.png}
+\caption{Image divers binarisé sur laquelle on a respectivement réalisé une ouverture et une fermeture}
+\end{figure}
+
+Enfin, nous réalisons l'opération Outline qui nous donne les contours dans l'image. 
+
+\begin{figure}[!h]
+\centering
+\includegraphics[height=7.5cm,width=15cm]{images/outline.png}
+\caption{Image divers binarisé sur laquelle on a réalisé l'opération "outline"}
+\end{figure}
+
 \newpage
 \section{Morphologie mathématique en niveau de gris}
 \addcontentsline{toc}{section}{Morphologie mathématique en niveau de gris}
+
+Voici nous donne les opérations d'érosion et de dilation en niveau gris sur l'image divers.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[height=5cm,width=5cm]{images/graylevelerode.png} \hfill
+\includegraphics[height=5cm,width=5cm]{images/grayleveldilate.png}
+\caption{Image divers en niveau de gris, érosions et dilatation}
+\end{figure}
+
+Voici pour finir la comparaison entre la détection de bord en niveau de gris par morphologie mathématique et
+par sobel. 
+
+\begin{figure}[!h]
+\centering
+\includegraphics[height=7.5cm,width=15cm]{images/sobelVSMorphology.png}
+\caption{Image divers en niveau de gris sur laquelle on compare la morphologie mathématique à Sobel}
+\end{figure} 
+
 
 \end{document}
 
