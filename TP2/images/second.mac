@@ -1,0 +1,95 @@
+ClearScreen();
+
+REAL rPairs[,];
+Histogram();
+rPairs = GetAutoThreshold(ArROIHistogram,6,2,,ActiveLuminanceRange,);
+if ( rPairs && 1 < GetShape(rPairs)[0] )
+   {
+// sucessful autothreshold
+
+// set threshold
+		Threshold(rPairs[1,0]:rPairs[1,1]);
+
+// alternative which works even for color
+		GrayToBinary(,rPairs[1,0],rPairs[1,1]);
+}
+Delete(rPairs);
+
+
+LineCNVFactors[0..6] = 1000.0 : 0.50562 : 1000.0 : 0.51137 : 1000.0 : 1.5169;
+
+
+CreateLine (122.59 : 222.96 ::
+122.59 : 163.13);
+MultipleMode = TRUE;
+MultipleMode = TRUE;
+DataCollection (0);
+SetExport (mLnLength, optExtractFlag, TRUE);
+SetExport (LnLength, optExtractFlag, TRUE);
+SetExport (mLnLuminance, optExtractFlag, TRUE);
+SetExport (LnLuminance, optExtractFlag, TRUE);
+MultipleExtract (TRUE);
+CloseWindow ("Measurement Explorer");
+
+
+//variables utiles
+REAL longueur_colonne = mLnLength*2; 
+INTEGER i = 0;
+INTEGER taille_cle_pixel = 0;
+INTEGER taille_cle = 0;
+INTEGER bool_est_dans_cle = 0;
+INTEGER bool_est_entre_cle = 0;
+
+//affichage si nécessaire à mettre à 0;
+INTEGER bool_affichage = 1;
+INTEGER bool_affichage2 = 1;
+INTEGER bool_affichage3 = 1;
+INTEGER bool_affichage_longueur_colonne =1;
+if (bool_affichage_longueur_colonne == 0) 
+{
+	show(longueur_colonne);
+	bool_affichage_longueur_colonne = 1;
+}
+
+
+for(i=0 ; i < longueur_colonne ; i++) 
+{
+	if ( mLnLuminance[0,i] == 255 && bool_est_dans_cle == 0) 
+	{
+		bool_est_dans_cle = 1;
+		if (bool_affichage == 0) 
+		{
+			show("Est dans la clé");
+			bool_affichage = 1;
+		}
+	} 
+	if ( mLnLuminance[0,i] == 0 && bool_est_dans_cle == 1)
+	{
+		bool_est_dans_cle = 0;
+		bool_est_entre_cle = 1;
+		if (bool_affichage2 == 0) 
+		{
+			show("Est entre la clé");
+			bool_affichage2 = 1;
+		}
+	}
+	if ( mLnLuminance[0,i] == 0 && bool_est_entre_cle == 1) 
+	{
+		taille_cle_pixel++;
+	}
+	if ( mLnLuminance[0,i] == 255 && bool_est_entre_cle == 1) 
+	{
+		if (bool_affichage3 == 0) 
+		{
+			show("Ecart fini");
+			show("taille pixel" +taille_cle_pixel);
+			bool_affichage3 = 1;
+		}
+		break;
+	}
+}
+
+taille_cle = (taille_cle_pixel+1)/2;
+
+show(taille_cle);
+

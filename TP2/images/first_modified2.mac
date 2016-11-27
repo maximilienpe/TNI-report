@@ -1,0 +1,30 @@
+ClearScreen ();
+
+REAL rPairs[,];
+rPairs = GetAutoThreshold(ArROIHistogram,6,2,,ActiveLuminanceRange,);
+if ( rPairs && 1 < GetShape(rPairs)[0] )
+   {
+// sucessful autothreshold
+
+// set threshold
+		Threshold(rPairs[1,0]:rPairs[1,1]);
+
+// alternative which works even for color
+	GrayToBinary(,rPairs[1,0],rPairs[1,1]);
+}
+
+LineCNVFactors[0..6] = 0.0 : 1.0 : -1.0 : 256.0 : 0.0 : 3.0;
+
+REAL x1search = 0.000;
+REAL y1search = 0.000;
+REAL x2search = 375.000;
+REAL y2search = 0.000;
+
+CreateLine(x1search : y1search :: x2search : y2search);
+DataCollection (0);
+SetExport (mLnLength, optExtractFlag, TRUE);
+SetExport (LnLength, optExtractFlag, TRUE);
+SetExport (mLnLuminance, optExtractFlag, TRUE);
+SetExport (LnLuminance, optExtractFlag, TRUE);
+MultipleExtract (TRUE);
+CloseWindow ("Measurement Explorer");

@@ -1,0 +1,22 @@
+Threshold per images:
+Connect_1 : Variance 110-255
+Connect_2 : Variance 116-255
+Connect_3 : Variance 116-255
+Connect_4 : Variance 128-255
+Connect_5 : Variance 126-255
+Connect_6 : Variance 119-255
+Connect_7 : Variance 124-255
+Connect_8 : Variance 130-255
+Connect_9 : Variance 129-255
+Connect_10 : Variance 124-255
+Connect_11 : Variance 126-255
+Connect_12 : Variance 129-255
+
+Moyenne environ 123
+
+CreateArea (10.599 : 12.102 ::
+10.599 : 8.757 ::
+17.777 : 8.757 ::
+17.777 : 12.102 ::
+10.599 : 12.102, FALSE, , , 3);
+MultipleMode = TRUE;
