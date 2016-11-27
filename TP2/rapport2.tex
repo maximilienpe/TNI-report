@@ -74,12 +74,53 @@
 
 \tableofcontents
 
+\chapter{Introduction}
+
+Ce deuxième travail pratique de Traitement Numérique de l'image fait suite à un travail d'initiation au logiciel
+Optimas. L'objectif de ce deuxième, est de réaliser dans un premier temps un contrôle qualité automatiques de connecteurs. Puis, 
+dans un second temps de réaliser une identification de dimension de clé. Sur ce même logiciel, il faudra donc cette fois-ci explorer
+quelques pistes rendues possibles par sa fonctionnalité de création de "macros". On prendra soin tout au long de ce rapport, d'expliquer
+les choix réalisés ainsi que leurs limites.
+
+
 \chapter{Contrôle de la qualité des connecteurs}
 
-Nous avons choisi de réaliser une binarisation avant tout autre opération pour mettre en évidence les broches 
-du connecteur présent sur l'image initialement en niveau de gris. Le seuil a été choisi en faisant la moyenne 
-des valeurs de seuils bas obtenus sur l'échantillon d'image Connect fourni, 
-à l'aide de l'outil auto-threshold utilisant l'option de minimisation de la variance.
+\paragraph{Rappel de l'énoncé du problème traité :}
+Nous sommes dans le cas où un industriel, par exemple, nous demande de réaliser un contrôle automatisé de la qualité des 
+composants qui sortent à la fin de sa chaîne de production à l'aide de captures réalisées par un capteur spécifique.
+Pour ce faire, il nous a fourni un échantillon de quelques captures de connecteurs parmi lesquelles on trouvera 
+un témoin (ie. une capture de connecteur en bon état) ainsi que des captures de connecteurs présentant divers 
+problèmes (broche pliée ou coupée, positionnement décentré et orientation diverse du connecteur).  
+
+\paragraph{Stratégie adopée :}
+On se propose dans un premier temps d'étudier le problème du cas basique où le connecteur serait toujours placé
+au même endroit sur l'image avec un même type de capteur qui serait situé à la même distance et dans les mêmes conditions 
+environnementales (luminositée notamment). 
+
+La stratégie adoptée dans ces conditions est alors de binariser l'image en choisissant un seuil qui permettrait
+de ne mettre en valeur que les broches (fond en noir et objet en blanc). Ensuite, nous chercherons à caractériser un
+cadre (ou R.O.I.) où chaque ligne de ce cadre passerait par les broches. De cette manière, en comptant pour un nombre
+suffisamment grand de ligne avec un pas (sur l'axe des y) régulier entre ces lignes, on peut déterminer un pourcentage
+de ligne passant par le bon nombre de broche (ici donné). Dans notre étude nous nous sommes fixé un seuil pour ce poucentage
+qui nous permet de décider si l'état du connecteur est bon ou mauvais. Si le pourcentage est supérieur à 95% alors on peut 
+estimer que le connecteur est en bon état. Dans le cas contraire, il serait en mauvais état. Cette valeur, 95%, est une valeur
+définie arbitrairement qui pourrait être suceptible de changer suivant les améliorations qu'on pourrait faire de cette macro 
+naïve.   
+
+\paragraph{Travail préalable d'étude de l'échantillon d'image : }
+Puisque nous avons choisi de réaliser une binarisation à partir d'un seuil à déterminer, nous avons réalisé 
+une étude préalable des différentes façons de déterminer ce seuil. Nous avons rapidement conclus qu'il ne serait
+pas forcément une bonne idée de réaliser un seuil fixe pour chaque image puisque la luminosité est une condition 
+parfois difficile à maîtriser totalement. Nous choissons donc de déterminer un seuil calculé de manière dynamique
+par optimas. Pour ce faire, Optimas proposes auto-threshold. On peut configurer cet outil pour qu'il réalise son 
+calcule suivant différents critères. Sachant que nous ne voulons mettre en évidence que les broches, après avoir
+essayé sur les échantillons données les différentes méthodes, nous avons convergé vers le calcul du seuil par 
+minimisation de la variance. Néanmoins, une première limite se présente déjà. En effet, pour la capture prise 
+dans des conditions de luminosité élevée, on remarque que d'autres parties que les broches du connecteur apparaissent
+en blanc. Cela est dû au fait que la différence sur cette capture entre le niveau de gris des broches et le niveau de
+gris du reste est trop faible. La méthode utilisée par l'au-threshold n'est donc pas suffisamment précise ici. 
+
+Voici un échantillon des valeurs calculées pour chacune des captures de l'échantillon de base. 
 
 \begin{table}[!h]
         \begin{center}
@@ -114,26 +155,108 @@ des valeurs de seuils bas obtenus sur l'échantillon d'image Connect fourni,
  	
                 \end{tabular}
         \end{center}
-        \caption{Comparaisons des seuils de binarisations auto avec l'option de minimisation de la variance}
+        \caption{Comparaison des seuils de binarisation automatique avec l'option de minimisation de la variance}
 \end{table}
 
+\paragraph{Analyse des résultats obtenu avec cette première macro : }
+Voici quelques résultats obtenus avec la macro dont vous pourez trouver le script en annexe.
 
-La moyenne obtenue du seuil bas est de 123. On utilisera donc l'outil de binarisation morphologique en utilisant
-le seuil 123. 
+\begin{figure}[!h]
+\centering
+\includegraphics[width=5cm, height=5cm]{images/Connect1o.png}\hfill
+\includegraphics[width=5cm, height=5cm]{images/connecteur1.png}
+\caption{Résultat de la macro pour l'image Connect_1.tiff}
+\end{figure}
 
+On constate heureusement que dans le cas de référence, la macro réalise correctement le travail souhaité. 
 
-//1.3 Améliorations
+\newpage
+\begin{figure}[!h]
+\centering
+\includegraphics[width=5cm, height=5cm]{images/Connect2o.png}\hfill
+\includegraphics[width=5cm, height=5cm]{images/connecteur2.png}
+\caption{Résultat de la macro pour l'image Connect_2.tiff}
+\end{figure} 
 
-Cette extension n'est pas forcément nécessaire pour une pièce à tester car on peut définir une zone dans laquelle la placer. Par contre, pour tester plusieurs capteurs en même temps 
-elle est interessante si on localise les différentes broches. Elle est industriellement viable si les conditions dans lesquelles le programme a été écris sont respectées (notamment
-la luminosité).
+On remarque dans ce deuxième cas où le connecteur est placé à la même position et présentant une broche pliée
+que la macro considère que l'état est mauvais. En effet, à partir d'un moment, la broche pliée vient toucher 
+une broche voisine. Puisque notre macro compte en fait les fronts montants des différents profils de lignes.
+A partir de la hauteur de la capture où la broche vient toucher sa voisine, la macro ne comptera plus qu'un seul
+front montant. 
+
+Précision à propos du calcul du front montant. Nous avons choisi de garder en mémoire dynamiquement la valeur du niveau
+de gris précédant lors du parcours du profil de ligne. De cette manière on peut comparer le niveau de gris précédant 
+au niveau de gris courant. La condition de détection du front montant utilisé est en fait : si le niveau de gris précédant
+est 0 (correspondant au noir du fond) et si le niveau de gris courant est strictement supérieur à 0, alors on a un front montant.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=5cm, height=5cm]{images/Connect3o.png}\hfill
+\includegraphics[width=5cm, height=5cm]{images/connecteur3.png}
+\caption{Résultat de la macro pour l'image Connect_3.tiff}
+\end{figure}
+
+Nous avons ici enfin un cas intéressant à analyser pour nous donner une première piste d'amélioration de la macro. 
+En effet, nous constatons que la macro aboutis au fait que le connecteur est mauvais. Ce qui est juste ! 
+Néanmoins, on constate également que la première ligne n'est en fait pas prise en compte. Ce qui signifie
+que la macro donne la bonne réponse pour une mauvaise raison. Ici le connecteur n'a pas exactement la même place 
+sur la capture que le connecteur sur la capture de référence. Pour éviter ce problème, on peut réaliser une détection
+de la position du premier pixel appartement à une broche. 
+
+Une amélioration basique à réaliser serait de commencer par récupérer le nombre de pixel en largeur de l'image et de réaliser de cette
+manière des profils de ligne (avec un pas très petit) successifs. On parcours chaque profil de ligne jusqu'à trouver un pixel blanc. 
+On trouvera de cette manière le premier pixel appartenant à une broche du connecteur étudié. 
+
+Un deuxième problème mis en évidence par ce test a été caché par le premier problème. En effet, même si le connecteur avait été à la bonne place
+la macro aurait dit que le connecteur est bon. Il faut réduire la taille de la R.O.I fixée au début.
+
+Une amélioration basique faisant suite à la première serait en fait de définir différents pas de manière empiriques. En effet, une fois qu'on a la 
+position du premier pixel faisant parti d'une broche, on pourrait définir un pas minime en x décroissant. Ensuite, il nous faut caractériser le cadre
+par trois autres points. Le premier point décalé d'un certains nombre de pixel vers les x croissant donne le deuxième. Le premier point décalé vers 
+les y croissant donne le troisième point. Et finalement le troisième point décalé du même nombre de pixel que le deuxième point vers les x croissant donnera
+le quatrième point. On a donc ici en suivant cette méthode trois nouveaux pas à définir. En restreignant la R.O.I., la broche pliée sortirait du champs et
+le problème serait bien détecté !
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=5cm, height=5cm]{images/Connect4o.png}\hfill
+\includegraphics[width=5cm, height=5cm]{images/connecteur4.png}
+\caption{Résultat de la macro pour l'image Connect_4.tiff}
+\end{figure} 
+
+Ici notre macro donne le bon résultat par chance. En effet, notre R.O.I. est un peu trop décalée par rapport aux broches du connecteur. L'amélioration
+proposée précédemment permettrait d'éviter de jouer sur cette chance. 
+
+\newpage
+\begin{figure}[!h]
+\centering
+\includegraphics[width=5cm, height=5cm]{images/Connect5o.png}\hfill
+\includegraphics[width=5cm, height=5cm]{images/connecteur5.png}
+\caption{Résultat de la macro pour l'image Connect_5.tiff}
+\end{figure}
+
+Nous constatons le même problème que celui rencontré précedemment, la solution à apporter est donc la même. 
+
+\paragraph{Autre amélioration possible : } 
+Nous avons remarqué qu'une image présente un connecteur orienté dans un autre sens que les autres.
+Il serait donc important de calculé l'orientation du connecteur. Pour ce faire, nous avons réfléchi à une
+idée à essayer. Sachant qu'on peut calculer l'orientation d'un bord en utilisant un filtrage de détection 
+de contour comme Sobel (à la place de ne calculer que le module, on pourrait également calculer l'inclinaison 
+du contour et donc avoir l'orientation générale du connecteur). Cependant, cette idée apporterait un autre soucis.
+En effet, ce genre de traitement amplifie beaucoup certains bruits. Il faudrait donc s'assurer que la capture ne soit
+pas bruitée avant de réaliser ce traitement avant la binarisation.   
 
 \chapter{Identification et mesures}
 
 La résolution obtenue est de Pixel Width 0,5114.
 
 
+\chapter{Annexes}
 
+\section{Première Macro}
+
+\newpage
+\section{Seconde Macro}
 
 \end{document}
 
