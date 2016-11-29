@@ -348,6 +348,17 @@ forte luminosité.
 \end{figure}
 
 Le résultat est bon pour l'image sombre et fausse pour l'image fortement éclairée comme supposé plus précédemment.
+L'une des améliorations possible dans ce cas serait que la macro détecte quand l'éclairement de la scène capturée 
+est trop important pour donner une mesure juste de l'écartement de la clé. De cette manière, dans la chaîne de production
+soit on met de côté toutes les clés qui ont été prises dans des conditions d'éclairement trop important pour une identification
+manuelle, soit on peut se permettre d'arrêter la chaîne de production et on l'arrête (ce dernier cas ne semble pas très intéressant).
+
+\newpage
+\paragraph{Autre amélioration possible : }
+Nous n'avons pas parlé des cas où la clé serait capturée dans une autre position sur l'image. Il faudrait alors
+déterminer la direction de l'axe de symétrie de la clé puis détecter le bout de la clé. Ensuite réaliser un profil d'une ligne 
+perpendiculaire à son axe de symétrie. Il faudrait également penser au cas où la clé ne serait pas entière et envisager dans 
+ces cas de rediriger la clé vers une identification manuelle.  
 
 \chapter{Annexes}
 
