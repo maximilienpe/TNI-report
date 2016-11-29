@@ -252,7 +252,7 @@ pas bruitée avant de réaliser ce traitement avant la binarisation.
 Dans cette seconde partie, il faut s'imaginer qu'un industriel nous demande de pouvoir identifier les différentes clés qui
 arriverait sur un tapis roulant pour les trier par la suite. Pour ce faire, nous avons de même un échantillon de capture
 de différentes clés. L'objectif qui peut d'identification d'une clé qui semble compliquée peut être ici réduit à la simple
-mesure de l'écartement de celle-ci. De cette manière, on pourra savoir si c'est une clé de 16 ou une clée de 11 qui défile 
+mesure de l'écartement de celle-ci. De cette manière, on pourra savoir si c'est une clé de 16 ou une clée de 12 qui défile 
 sur le tapis roulant, par exemple. L'échantillon nous permet de constater qu'on peut travailler dans l'optique de faible
 variation de luminosité et également travailler avec une faible variation de positionnement de l'objet sur l'image.
  
@@ -288,7 +288,66 @@ Nous allons donc voir dans la prochaine partie les résultats obtenus par la sec
 
 \paragraph{Analyse des résultats obtenu avec cette seconde macro : }
 
-(à finir)
+Voici les résultats en image de l'exécution de la seconde macro : 
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=5cm, height=5cm]{images/key1617.png}\hfill
+\includegraphics[width=5cm, height=5cm]{images/key16.png}
+\caption{Résultat de la macro pour l'image key_16_17.tif}
+\end{figure}
+
+On observe que pour cette première image, la fonction réalise bien l'objectif souhaité. 
+On remarquera la même chose pour la plupart des autres résultats.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=5cm, height=5cm]{images/key2022.png}\hfill
+\includegraphics[width=5cm, height=5cm]{images/key20.png}
+\caption{Résultat de la macro pour l'image key_20_22.tif}
+\end{figure}
+
+\newpage
+\begin{figure}[!h]
+\centering
+\includegraphics[width=5cm, height=5cm]{images/key1415.png}\hfill
+\includegraphics[width=5cm, height=5cm]{images/key15.png}
+\caption{Résultat de la macro pour l'image key_14_15.tif}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=5cm, height=5cm]{images/key1213.png}\hfill
+\includegraphics[width=5cm, height=5cm]{images/key13.png}
+\caption{Résultat de la macro pour l'image key_12_13.tif}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=5cm, height=5cm]{images/key89.png}\hfill
+\includegraphics[width=5cm, height=5cm]{images/key8.png}
+\caption{Résultat de la macro pour l'image key_8_9.tif}
+\end{figure}
+
+\newpage
+Nous allons analyser maintenant les résultats obtenus avec la macro pour les images prises avec une faible luminosité et
+forte luminosité.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=5cm, height=5cm]{images/key1617D.png}\hfill
+\includegraphics[width=5cm, height=5cm]{images/key16dark.png}
+\caption{Résultat de la macro pour l'image key_16_17_D.tif}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=5cm, height=5cm]{images/key1617L.png}\hfill
+\includegraphics[width=5cm, height=5cm]{images/key16light.png}
+\caption{Résultat de la macro pour l'image key_16_17_L.tif}
+\end{figure}
+
+Le résultat est bon pour l'image sombre et fausse pour l'image fortement éclairée comme supposé plus précédemment.
 
 \chapter{Annexes}
 
