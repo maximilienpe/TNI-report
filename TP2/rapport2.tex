@@ -92,7 +92,7 @@ Pour ce faire, il nous a fourni un échantillon de quelques captures de connecte
 un témoin (ie. une capture de connecteur en bon état) ainsi que des captures de connecteurs présentant divers 
 problèmes (broche pliée ou coupée, positionnement décentré et orientation diverse du connecteur).  
 
-\paragraph{Stratégie adopée :}
+\paragraph{Stratégie adoptée :}
 On se propose dans un premier temps d'étudier le problème du cas basique où le connecteur serait toujours placé
 au même endroit sur l'image avec un même type de capteur qui serait situé à la même distance et dans les mêmes conditions 
 environnementales (luminositée notamment). 
@@ -246,10 +246,49 @@ du contour et donc avoir l'orientation générale du connecteur). Cependant, cet
 En effet, ce genre de traitement amplifie beaucoup certains bruits. Il faudrait donc s'assurer que la capture ne soit
 pas bruitée avant de réaliser ce traitement avant la binarisation.   
 
-\chapter{Identification et mesures}
+\chapter{Identification et mesures de clés}
 
-La résolution obtenue est de Pixel Width 0,5114.
+\paragraph{Rappel de l'énoncé du problème traité :}
+Dans cette seconde partie, il faut s'imaginer qu'un industriel nous demande de pouvoir identifier les différentes clés qui
+arriverait sur un tapis roulant pour les trier par la suite. Pour ce faire, nous avons de même un échantillon de capture
+de différentes clés. L'objectif qui peut d'identification d'une clé qui semble compliquée peut être ici réduit à la simple
+mesure de l'écartement de celle-ci. De cette manière, on pourra savoir si c'est une clé de 16 ou une clée de 11 qui défile 
+sur le tapis roulant, par exemple. L'échantillon nous permet de constater qu'on peut travailler dans l'optique de faible
+variation de luminosité et également travailler avec une faible variation de positionnement de l'objet sur l'image.
+ 
+\paragraph{Stratégie adoptée :}
+Afin de résoudre le problème qui nous est posé, nous nous proposons de réaliser une seconde macro qui affichera
+la taille de l'écartement de la clé capturée en millimètre. Cette macro se déroulera en deux temps : la binarisation 
+de l'image de manière automatique comme réalisé précédemment par la première macro de contrôle de qualité, et, la mesure
+de l'écartement grâce à l'analyse d'un profil de colonne bien choisi. Attention il est important de noter qu'il faut au 
+préalable réaliser un calibrage (à partir d'une image étalon fournie)  du logiciel Optimas sans lequel le rapport pixel/mm
+du logiciel serait éronné. Ce calibrage doit bien entendu correspondre à la même échelle que celle utilisée lors des captures.
+Une autre contrainte donc évidente de cette macro sera l'utilisation de la même échelle de capture pour chaque prise. 
 
+Suite au calibrage d'Optimas, nous réaliserons donc l'étape de binarisation de l'image pour mettre en évidence la clé étudiée (toujours
+objet en blanc sur fond en noir). De cette manière, nous pouvons beaucoup plus simplement identifier grâce à la valeur de luminance 
+des pixels si un pixel représente une partie de l'objet ou du fond. Pour ce faire, nous réalisons toujours une binarisation avec un 
+seuillage choisi automatiquement par l'outil auto-threshold configuré avec l'option de minimisation de la variance. C'est selon nos 
+tests sur l'échantillon d'images fourni, la méthode la plus viable de calcul du seuil avec le critère de mise en valeur de la clé. 
+
+Suite à la binarisation, nous réaliserons donc l'analyse d'un profil de colonne qui passe perpendiculairement à l'axe de symétrie 
+de la "machoire" de la clé. En effet, si le profil de colonne venait à ne pas être perpendiculaire, nous ne prendrions pas la mesure 
+de l'écartement de la clé mais simplement une "corde" possible. Cette valeure ne serait pas très pertinante dans notre intérêt. 
+Nous avons donc choisi arbitrairement deux points de l'image contenant la clé de 16 de telle manière à ce que nos deux critères soient respectés
+(perpendicularité et traverssement des deux parties représentant la "machoire" de la clé). Ensuite, pour chaque pixel du profil de colonne réalisé, 
+nous avons réalisé un système de conditions afin de pouvoir compter combien de pixels appartiennant au fond réprésentent l'écartement de la clé. 
+En connaissant au préalable le rapport pixel/mm (ou mm/pixel) après calibrage, nous avons pu en déduire simplement une mesure en millimètre de
+l'écartement de la clé. En l'occurrence, il suffisait de diviser par deux le nombre de pixel pour avoir une approximation précise au millimètre près 
+de la mesure de l'écartement.    
+
+Je rappelle enfin que de la même manière que dans la première partie, nous avons cherché à réaliser une macro simple dans un premier temps
+afin d'analyser quels autres problèmes se posent, de les analyser et de les résoudre pour optenir un algorithme plus robuste. 
+
+Nous allons donc voir dans la prochaine partie les résultats obtenus par la seconde macro (présente en annexes). 
+
+\paragraph{Analyse des résultats obtenu avec cette seconde macro : }
+
+(à finir)
 
 \chapter{Annexes}
 
@@ -263,7 +302,7 @@ La résolution obtenue est de Pixel Width 0,5114.
 
 
 \newpage
-\section{Seconde Macro}
+\section{Seconde Macro : identifications et mesures de clés}
 
 \begin{figure}[!h]
 \centering
