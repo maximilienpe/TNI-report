@@ -1,0 +1,88 @@
+\documentclass{scrreprt}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{underscore}
+\usepackage[bookmarks=true]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage[french]{babel}
+\hypersetup{
+    bookmarks=false,    % show bookmarks bar
+    pdftitle={rapport_TP1_Lambolez_Petit},    % title
+    pdfauthor={Théodore Lambolez, Maximilien Petit},                     % author
+    pdfsubject={TeX and LaTeX},                        % subject of the document
+    pdfkeywords={TeX, LaTeX, graphics, images}, % list of keywords
+    colorlinks=true,       % false: boxed links; true: colored links
+    linkcolor=blue,       % color of internal links
+    citecolor=black,       % color of links to bibliography
+    filecolor=black,        % color of file links
+    urlcolor=black,        % color of external links
+    linktoc=page            % only page is linked
+}
+\def\myversion{1.0}
+\date{}
+%\title{%
+
+%}
+\usepackage{hyperref}
+\begin{document}
+\begin{figure}
+   \begin{minipage}[c]{.46\linewidth}
+      \includegraphics[scale=0.3]{images/telecom.png}
+   \end{minipage} \hfill
+   \begin{minipage}[c]{.46\linewidth}
+      \includegraphics[scale=1.9]{images/lorraine.jpg}
+   \end{minipage}
+\end{figure}
+\begin{flushright}
+    \rule{15cm}{5pt}
+    \vskip1cm
+\end{flushright}
+\begin{center}
+	\vspace{3cm}
+	\fbox{
+	\begin{minipage}{0.9\textwidth}
+        	\Huge{
+			\textbf{
+			\begin{center}
+				Rapport \\Travaux Pratiques 3
+				\vspace{0.5cm}
+			\end{center}
+			}
+		}
+	\end{minipage}
+	}
+\end{center}
+\begin{flushright}
+        \vspace{5cm}
+	\huge{
+        \textbf{
+	Ecrit par \\
+	\vspace{0,875cm}
+	\href{mailto:theodore.lambolez@telecomnancy.eu}{Théodore Lambolez} \\
+	\href{mailto:maximilien.petit@telecomnancy.eu}{Maximilien Petit}\\
+	}
+	}
+        \vspace{0,5cm}
+        \large{
+	\textbf{
+	\today\\
+	}	
+	}
+\end{flushright}
+
+\tableofcontents
+
+\chapter{}
+
+\chapter{Annexes}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=10cm, height=15cm]{images/macro.png}
+\caption{Macro de reconnaissance de forme}
+\end{figure}
+
+\end{document}
+
